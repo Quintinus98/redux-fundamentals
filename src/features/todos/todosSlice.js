@@ -9,12 +9,6 @@ const initialState = {
   entities: {}
 }
 
-// function nextTodoId(todos) {
-//   const maxId = todos.reduce((max, todo) => Math.max(todo.id, max), -1)
-//   return maxId + 1
-// }
-
-
 // Use initial state as default
 export default function todosReducer(state = initialState, action) {
   switch (action.type) {
@@ -30,7 +24,7 @@ export default function todosReducer(state = initialState, action) {
     
     case 'todos/todoToggled': {
       const todoId = action.payload
-      const todo = state.entities.todoId
+      const todo = state.entities[todoId]
       return {
         ...state,
         entities: {
@@ -41,8 +35,9 @@ export default function todosReducer(state = initialState, action) {
       }
 
     case 'todos/colorSelected': {
+      // Check this!
       let { todoId, color } = action.payload
-      const todo = state.entities.todoId
+      const todo = state.entities[todoId]
       return {
         ...state,
         entities: {
@@ -120,7 +115,7 @@ export const todosLoading = () => ({ type: 'todos/todosLoading' })
 
 export const todoAdded = todo => ({ type: 'todos/todoAdded', payload: todo })
 
-export const todoToggled = todoId => ( { type: 'todos/todoToggled', payload: todoId })
+export const todoToggled = todoId => ({ type: 'todos/todoToggled', payload: todoId })
 
 export const todoColorSelected = (todoId, color) => ({ type: 'todos/colorSelected', payload: {todoId, color} })
 
@@ -186,5 +181,5 @@ export const selectFilteredTodos = createSelector(
 export const selectFilteredTodoIds = createSelector(
   selectFilteredTodos,
   // Derive data in the output selector
-  filteredTodos => filteredTodos.map(todo => todo.id)
+  (filteredTodos) => filteredTodos.map((todo) => todo.id)
 )
