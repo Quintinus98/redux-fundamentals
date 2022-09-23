@@ -1,14 +1,14 @@
-import { createStore, applyMiddleware } from "redux";
-import thunkMiddleware from 'redux-thunk'
-import { composeWithDevTools } from "redux-devtools-extension";
-// import { createStore, compose } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+
+import todosReducer from "./features/todos/todosSlice";
+import filtersReducer from "./features/filters/filtersSlice";
 
 
-import rootReducer from "./reducer";
-
-const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware))
-
-// The store now has the ability to accept thunk (a code that delays) functions
-const store = createStore(rootReducer, composedEnhancer)
+const store = configureStore({
+  reducer: {
+    todos: todosReducer,
+    filters: filtersReducer
+  }
+})
 
 export default store
